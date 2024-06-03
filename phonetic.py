@@ -15,4 +15,4 @@ try:
     # s = row.find('sub')
     return  chinese + '->' + s 
 except:
-    print( '窩看佈懂' )
+    return( '窩看佈懂' )
