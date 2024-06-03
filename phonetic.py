@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
-word = input( '請輸入中文字:' )
+# word = input( '請輸入中文字:' )
+def read( word):
 url = f'https://dict.revised.moe.edu.tw/search.jsp?md=1&word={word}#searchL'
 
 html = requests.get( url )
