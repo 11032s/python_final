@@ -1,4 +1,4 @@
-def multiplication_table(num):
+def read(num):
     result = []
     for j in range(1, 10):  # 控制乘數的範圍
         result.append(f"{num} x {j} = {num * j}")  # 構建每一個乘法表運算式及結果
