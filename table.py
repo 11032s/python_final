@@ -10,7 +10,7 @@ app = Flask(__name__)
 YOUR_CHANNEL_ACCESS_TOKEN = 'Pw49Caccq0S56ZOy71Jf9qhTbvQikZa554GASIto3jCvjmeHSXj8gmLyNcPV2NF/i8PpgULCJ7aKc6CXucM7IoZRaD0a51+ITsEfajOv5RwCfrX323tr5MlJgbTOzRBq5q9YXdhZc6OUX3TZzamOBQdB04t89/1O/w1cDnyilFU='
 YOUR_CHANNEL_SECRET = 'f737380ab792c64c93714edd82d711c1'
 
-line_bot_api = LineBotApi(Pw49Caccq0S56ZOy71Jf9qhTbvQikZa554GASIto3jCvjmeHSXj8gmLyNcPV2NF/i8PpgULCJ7aKc6CXucM7IoZRaD0a51+ITsEfajOv5RwCfrX323tr5MlJgbTOzRBq5q9YXdhZc6OUX3TZzamOBQdB04t89/1O/w1cDnyilFU=)
+line_bot_api  =  Y XdhZc6OUX3TZzamOBQdB04t89/1O/w1cDnyilFU=)
 handler = WebhookHandler(f737380ab792c64c93714edd82d711c1)
 
 def generate_question():
