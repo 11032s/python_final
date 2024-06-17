@@ -1,19 +1,24 @@
-def read(num):
-    result = []
-    for j in range(1, 10):  # 控制乘數的範圍
-        result.append(f"{num} x {j} = {num * j}")  # 構建每一個乘法表運算式及結果
-    return result
+word = input( '請輸入開始:' )
+import random
 
-if __name__ == '__main__':
-    while True:
-        try:
-            num = int(input("請輸入要查詢的數字 (1-9): "))
-            if 1 <= num <= 9:
-                tables = multiplication_table(num)
-                for table in tables:
-                    print(table)  # 輸出該數字的九九乘法表
-                break  # 成功輸出後退出循環
-            else:
-                print("請輸入有效的數字 (1-9)。")
-        except ValueError:
-            print("請輸入有效的數字。")
+def generate_question():
+    num1 = random.randint(1, 100)
+    num2 = random.randint(1, 100)
+    answer = num1 + num2
+    return num1, num2, answer
+
+def main():
+    num1, num2, answer = generate_question()
+    user_answer = input(f"請回答 {num1} + {num2} = ")
+    
+    try:
+        user_answer = int(user_answer)
+        if user_answer == answer:
+            print("你好棒！")
+        else:
+            print("哈哈 繼續努力")
+    except ValueError:
+        print("請輸入有效的數字")
+
+if __name__ == "__main__":
+    main()
