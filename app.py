@@ -15,7 +15,7 @@
 
 import os
 import sys
-import phonetic as ph
+import table as ph
 from argparse import ArgumentParser
 
 from flask import Flask, request, abort
