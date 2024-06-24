@@ -1,21 +1,8 @@
-# -*- coding: utf-8 -*-
-
-#  Licensed under the Apache License, Version 2.0 (the "License"); you may
-#  not use this file except in compliance with the License. You may obtain
-#  a copy of the License at
-#
-#       https://www.apache.org/licenses/LICENSE-2.0
-#
-#  Unless required by applicable law or agreed to in writing, software
-#  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
-#  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
-#  License for the specific language governing permissions and limitations
-#  under the License.
-
-
 import os
 import sys
-import table as ph
+import random
+import requests
+from bs4 import BeautifulSoup
 from argparse import ArgumentParser
 
 from flask import Flask, request, abort
@@ -44,6 +31,37 @@ if channel_access_token is None:
 line_bot_api = LineBotApi(channel_access_token)
 parser = WebhookParser(channel_secret)
 
+def extract_chengyu_from_url(url):
+    try:
+        # 發送請求到指定網址，並使用utf-8編碼解析
+        response = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'}, timeout=10)
+        response.raise_for_status()  # 確認是否成功取得響應
+        response.encoding = 'big5'
+        # 使用BeautifulSoup解析HTML，指定from_encoding='utf-8'
+        soup = BeautifulSoup(response.text, 'html.parser')
+
+        # 找到包含成語的所有 <p> 標籤
+        p_tags = soup.find_all('p')
+
+        # 過濾包含成語的 <p> 標籤列表
+        chengyu_paragraphs = []
+        for p_tag in p_tags:
+            if '成語：' in p_tag.text:
+                chengyu_paragraphs.append(p_tag)
+        
+        # 從包含成語的標籤中隨機選擇一個
+        if chengyu_paragraphs:
+            random_p_tag = random.choice(chengyu_paragraphs)
+            return random_p_tag.text.strip()  # 返回標籤內文（即包含成語的內容）
+        else:
+            return None
+    
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching content from {url}: {e}")
+        return None
+    except Exception as e:
+        print(f"Error extracting chengyu: {e}")
+        return None
 
 @app.route("/callback", methods=['POST'])
 def callback():
@@ -66,10 +84,21 @@ def callback():
         if not isinstance(event.message, TextMessage):
             continue
 
-        line_bot_api.reply_message(
-            event.reply_token,
-            TextSendMessage(text=ph.read(event.message.text))
-        )
+        # 判斷是否收到 "成語" 文字訊息
+        if event.message.text == "成語":
+            # 呼叫 extract_chengyu_from_url 函式取得成語
+            chengyu = extract_chengyu_from_url('http://w4.hyps.tp.edu.tw/hy164/www/study4.htm')
+
+            if chengyu:
+                line_bot_api.reply_message(
+                    event.reply_token,
+                    TextSendMessage(text=f"隨機成語：{chengyu}")
+                )
+            else:
+                line_bot_api.reply_message(
+                    event.reply_token,
+                    TextSendMessage(text="抱歉，未找到成語。")
+                )
 
     return 'OK'
 
