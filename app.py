@@ -92,7 +92,7 @@ def callback():
             if chengyu:
                 line_bot_api.reply_message(
                     event.reply_token,
-                    TextSendMessage(text=f"隨機成語：{chengyu}")
+                    TextSendMessage(text=f"{chengyu}")
                 )
             else:
                 line_bot_api.reply_message(
